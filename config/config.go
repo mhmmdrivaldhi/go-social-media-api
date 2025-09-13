@@ -24,10 +24,15 @@ func LoadConfig() {
 	if err != nil {
 		panic(err)
 	}
-
-	err = viper.Unmarshal(&AppConfig)
-	if err != nil {
-		panic(err)
+	
+	AppConfig = &Config{
+		ApplicationName: viper.GetString("APP_NAME"),
+		APIPort:         viper.GetString("API_PORT"),	
+		Port:            viper.GetString("DB_PORT"),
+		Host:            viper.GetString("DB_HOST"),
+		Username:        viper.GetString("DB_USERNAME"),
+		Password:        viper.GetString("DB_PASSWORD"),
+		DBName:          viper.GetString("DB_NAME"),
+		DBUrl:           viper.GetString("DB_URL"),
 	}
-
 }

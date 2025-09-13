@@ -1,15 +1,25 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+	"github.com/mhmmdrivaldhi/go-social-media-api/config"
+)
 
 func main() {
-	route := gin.Default()
+	config.LoadConfig()
+	config.InitDB()
 
-	route.GET("/", func(c *gin.Context) {
+	route := gin.Default()
+	api := route.Group("/api")
+
+
+	api.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "PING!",
 		})
 	})
 
-	route.Run(":8080")
+	route.Run(fmt.Sprintf(":%s", config.AppConfig.APIPort))
 }

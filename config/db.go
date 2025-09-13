@@ -18,6 +18,8 @@ func InitDB() {
 		AppConfig.DBName,
 	)
 
+	fmt.Println("DSN:", dsn)
+
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
