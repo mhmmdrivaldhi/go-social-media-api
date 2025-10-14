@@ -8,6 +8,7 @@ import (
 type AuthRepository interface{
 	Register(user *entity.User) error
 	IsEmailExists(email string) bool
+	GetUserByEmail(email string) (*entity.User, error)
 }
 
 type authRepository struct {
@@ -35,4 +36,13 @@ func (ar *authRepository) Register(user *entity.User) error {
 	}
 
 	return nil
+}
+
+func (ar *authRepository) GetUserByEmail(email string) (*entity.User, error) {
+	err := ar.db.Where("email = ?", email).First(&entity.User{}).Error
+	if err != nil {
+		return nil, err
+	}
+
+	return &entity.User{}, nil
 }

@@ -10,12 +10,14 @@ import (
 var DB *gorm.DB
 
 func InitDB() {
+	cfg := &Config{}
+
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Asia%%2FJakarta",
-		AppConfig.Username,
-		AppConfig.Password,
-		AppConfig.Host,
-		AppConfig.Port,
-		AppConfig.DBName,
+		cfg.Username, 
+		cfg.Password, 
+		cfg.Host, 
+		cfg.Port, 
+		cfg.DBName,
 	)
 
 	fmt.Println("DSN:", dsn)
