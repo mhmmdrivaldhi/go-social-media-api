@@ -9,7 +9,11 @@ import (
 )
 
 func main() {
-	config.LoadConfig()
+	cfg, err := config.NewConfig()
+	if err != nil {
+		panic(err)
+	}
+
 	config.InitDB()
 
 	route := gin.Default()
@@ -23,5 +27,5 @@ func main() {
 	// })
 	router.AuthRouter(api)
 
-	route.Run(fmt.Sprintf(":%s", config.AppConfig.APIPort))
+	route.Run(fmt.Sprintf(":%s", cfg.APIPort))
 }

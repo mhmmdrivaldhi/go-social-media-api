@@ -17,4 +17,5 @@ func AuthRouter(rg *gin.RouterGroup) {
 	// rg := gin.Default()
 	// routes := rg.Group("/api/v1")
 	rg.POST("/register", authController.Register)
+	rg.POST("/login", authController.Login)
 }

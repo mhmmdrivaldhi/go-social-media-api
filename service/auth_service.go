@@ -9,10 +9,12 @@ import (
 
 type AuthService interface{
 	Register(req *dto.RegisterRequest) error
+	Login(req *dto.LoginRequest) (*dto.LoginResponse, error)
 }
 
 type authService struct {
 	authRepo repository.AuthRepository
+	jwtToken utils.JwtToken
 }
 
 func NewAuthService(authRepo repository.AuthRepository) AuthService {
@@ -49,4 +51,29 @@ func (as *authService) Register(req *dto.RegisterRequest) error {
 	return nil
 }
 
+func (as *authService) Login(req *dto.LoginRequest) (*dto.LoginResponse, error) {
+	user, err := as.authRepo.GetUserByEmail(req.Email)
+	if err != nil {
+		return nil, &utils.NotFoundError{Message: "Email address or password is wrong"}
+	}
 
+	err = utils.VerificationPassword(user.Password, req.Password)
+	if err != nil {
+		return nil, &utils.UnauthorizedError{Message: "Email address or Password is Wrong"}
+	}
+
+	token, err := as.jwtToken.GenerateToken(user.ID, user.Email)
+	if err != nil {
+		return nil, &utils.InternalServerError{Message: "Failed to generate token"}
+	}
+
+	return &dto.LoginResponse{
+		Token: token,
+		User: dto.UserResponse{
+			ID: user.ID,
+			Name: user.Name,
+			Email: user.Email,
+			Gender: user.Gender,
+		},
+	}, nil
+}

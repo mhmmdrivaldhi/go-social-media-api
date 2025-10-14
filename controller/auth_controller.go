@@ -40,3 +40,15 @@ func (ac *authController) Register(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, response)
 }
+
+func (ac *authController) Login(ctx *gin.Context) {
+	var login *dto.LoginRequest
+
+	err := ctx.ShouldBind(&login)
+	if err != nil {
+		utils.HandleError(ctx, &utils.BadRequestError{Message: err.Error()})
+		return
+	}
+
+	
+}
