@@ -26,6 +26,8 @@ func main() {
 	// 	})
 	// })
 	router.AuthRouter(api)
+	router.PostRouter(api)
+
 
 	route.Run(fmt.Sprintf(":%s", cfg.APIPort))
 }
