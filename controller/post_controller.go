@@ -50,8 +50,8 @@ func (pc *postController) Create(ctx *gin.Context) {
 		post.PictureUrl.Filename = fmt.Sprintf("%s/public/picture/%s", ctx.Request.Host, newFileName)
 	}
 
-	userID := 1
-	post.UserID = userID
+	userID, _ := ctx.Get("userId")
+	post.UserID = userID.(int)
 	
 	err = pc.postService.Create(&post)
 	if err != nil {
