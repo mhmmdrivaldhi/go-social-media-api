@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -45,6 +46,8 @@ func (pc *postController) Create(ctx *gin.Context) {
 		// Save image to directory
 		dst := filepath.Join("/public/picture", filepath.Base(newFileName))
 		ctx.SaveUploadedFile(post.PictureUrl, dst)
+
+		post.PictureUrl.Filename = fmt.Sprintf("%s/public/picture/%s", ctx.Request.Host, newFileName)
 	}
 
 	userID := 1
